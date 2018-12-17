@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from .models import Page
 
@@ -11,8 +11,21 @@ from django.views.generic import CreateView
 # Importar vista generica 'UpdateView' y 'DeleteView'
 from django.views.generic.edit import UpdateView, DeleteView
 
-#Modelo del formulario
+# Modelo del formulario
 from .forms import PageForm
+
+
+class StaffRequiredMixin(object):
+    """
+    Este mixin requerira que el usuario sea miembro del staff
+
+    """
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return redirect(reverse_lazy('admin:login'))
+        return super(StaffRequiredMixin, self).dispatch(request, *args, **kwargs)
+
 
 # Create your views here.
 class PagesListView(ListView):
@@ -27,10 +40,10 @@ class PageDetailView(DetailView):
     # template_name = ''
 
 
-class PageCreate(CreateView):
+class PageCreate(StaffRequiredMixin, CreateView):
     model = Page
     form_class = PageForm
-    #fields = ['title', 'content', 'order']
+    # fields = ['title', 'content', 'order']
     # por defecto el asigna como nombre de tamplate <pages/model_name_list.html>
     # template_name = ''
 
@@ -41,9 +54,9 @@ class PageCreate(CreateView):
     success_url = reverse_lazy('pages:pages')
 
 
-class PageUpdate(UpdateView):
+class PageUpdate(StaffRequiredMixin, UpdateView):
     model = Page
-    #fields = ['title', 'content', 'order']
+    # fields = ['title', 'content', 'order']
 
     form_class = PageForm
 
@@ -52,11 +65,11 @@ class PageUpdate(UpdateView):
     # Es necesario sobreescribir el metodo para hacer reedirección al registro que estamos editando,
     # esto para acceder al objeto interno
     def get_success_url(self):
-        #el 'ok', para validar si el registro se actualizo correctamente
+        # el 'ok', para validar si el registro se actualizo correctamente
         return reverse_lazy('pages:update', args=[self.object.id]) + '?ok'
 
 
-class PageDelete(DeleteView):
+class PageDelete(StaffRequiredMixin, DeleteView):
     model = Page
 
     success_url = reverse_lazy('pages:pages')
