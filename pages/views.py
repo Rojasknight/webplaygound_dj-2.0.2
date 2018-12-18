@@ -46,11 +46,11 @@ class PageDetailView(DetailView):
     # template_name = ''
 
 
-
+@method_decorator(staff_member_required(), name='dispatch')
 class PageCreate(CreateView):
     model = Page
     form_class = PageForm
-    # fields = ['title', 'content', 'order']
+    #fields = ['title', 'content', 'order']
     # por defecto el asigna como nombre de tamplate <pages/model_name_list.html>
     # template_name = ''
 
@@ -60,7 +60,7 @@ class PageCreate(CreateView):
     # Redirect
     success_url = reverse_lazy('pages:pages')
 
-
+@method_decorator(staff_member_required(), name='dispatch')
 class PageUpdate(UpdateView):
     model = Page
     # fields = ['title', 'content', 'order']
@@ -75,7 +75,7 @@ class PageUpdate(UpdateView):
         # el 'ok', para validar si el registro se actualizo correctamente
         return reverse_lazy('pages:update', args=[self.object.id]) + '?ok'
 
-
+@method_decorator(staff_member_required(), name='dispatch')
 class PageDelete(DeleteView):
     model = Page
 

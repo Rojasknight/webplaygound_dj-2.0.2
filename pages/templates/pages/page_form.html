@@ -9,9 +9,9 @@
                 <div class="col-md-9 mx-auto">
                     <div>
                         <form action="" method="post">{% csrf_token %}
-                            <table>
-                                {{ form.as_p }}
-                            </table>
+
+                            {{ form.as_p }}
+
                             <br>
                             <div class="text-center">
                                 <input class="btn btn-primary btn-block" type="submit" value="Crear página"/>
