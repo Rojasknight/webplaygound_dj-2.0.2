@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -27,11 +26,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    #Autenticación personalizada.
+    # Autenticación personalizada.
     'registration',
 
     'django.contrib.admin',
@@ -41,12 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #third parties
+    # third parties
     'ckeditor',
 
-    #App CORE
+    # App CORE
     'core',
-    #App PAGES
+    # App PAGES
     'pages.apps.PagesConfig'
 ]
 
@@ -80,7 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'webground.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -90,7 +87,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -110,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -124,15 +119,28 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
 
-
-#Configuración para la autenticación personalizada.
-
-#auth redirect
+# Configuración para la autenticación personalizada.
+# auth redirect
 LOGIN_REDIRECT_URL = 'pages:pages'
 LOGOUT_REDIRECT_URL = 'login'
+
+# Emails, para recuperacion de la cuenta.
+if not DEBUG:
+    # Guardar los mails en ficheros de prueba.
+    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    # Ruta a guardar los mails.
+    EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
+else:
+    # configuración para producción
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_USE_TLS = True
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = '...@gmail.com'
+    EMAIL_HOST_PASSWORD = '...'
