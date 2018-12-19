@@ -130,7 +130,7 @@ LOGIN_REDIRECT_URL = 'pages:pages'
 LOGOUT_REDIRECT_URL = 'login'
 
 # Emails, para recuperacion de la cuenta.
-if not DEBUG:
+if DEBUG:
     # Guardar los mails en ficheros de prueba.
     EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
     # Ruta a guardar los mails.
