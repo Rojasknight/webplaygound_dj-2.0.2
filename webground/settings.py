@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     # App CORE
     'core',
     # App PAGES
-    'pages.apps.PagesConfig'
+    'pages.apps.PagesConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -124,9 +125,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+#Configuración para archivos(Imgenes)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Configuración para la autenticación personalizada.
 # auth redirect
-LOGIN_REDIRECT_URL = 'pages:pages'
+#LOGIN_REDIRECT_URL = 'pages:pages'
 LOGOUT_REDIRECT_URL = 'login'
 
 # Emails, para recuperacion de la cuenta.
